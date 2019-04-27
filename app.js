@@ -3,6 +3,7 @@ const app = express();
 const fs = require('fs');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const path = require('path');
 
 app.use( bodyParser.json() );       // to support JSON-encoded bodies
 app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
@@ -12,7 +13,7 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 app.use(cors());
 
 const loadDictionary = () => {
-    return fs.readFileSync('modified.txt', 'utf8').replace(/\r/g,"").split('\n');
+    return fs.readFileSync('./modified.txt', 'utf8').replace(/\r/g,"").split('\n');
 }
 
 const sortDictionary = (dict) => {
@@ -89,5 +90,11 @@ app.get('/scrabble/:word', (req, res) => {
     possibilities.length ? res.send(possibilities) : res.send([]);
 });
 
-app.listen(3000, () => console.log("Server running"));
+app.get("*", (req, res) => {
+    res.send("Nothing to see here folks");
+})
+
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
