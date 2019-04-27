@@ -50,7 +50,7 @@ function styleTiles() {
 function fetchData(word) {
     document.querySelector(".result-container").innerHTML = "";
     word = word.toLowerCase().replace(/[^a-z]/g, '');
-    fetch(`http://www.localhost:3000/scrabble/${word}`)
+    fetch(`https://scrabble-server.herokuapp.com/scrabble/${word}`)
     .then(res => res.json())
     .then(data => {
         WordList(data);
