@@ -12,6 +12,13 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 
 app.use(cors());
 
+// .flat not supported by Heroku
+function flatten(arr) {
+    return arr.reduce(function (flat, toFlatten) {
+      return flat.concat(Array.isArray(toFlatten) ? flatten(toFlatten) : toFlatten);
+    }, []);
+  }
+
 const loadDictionary = () => {
     return fs.readFileSync('./modified.txt', 'utf8').replace(/\r/g,"").split('\n');
 }
@@ -54,7 +61,7 @@ const findMatches = (letters, sortedDict) => {
             results.push(sortedDict[entry]);
         }
     });
-    return results.flat().sort((a, b) => b.length - a.length);
+    return flatten(results).sort((a, b) => b.length - a.length);
 }
 
 const stripInvalidCharsAndSplit = (word) => {
