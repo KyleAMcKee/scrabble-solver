@@ -41,13 +41,15 @@ function styleTiles() {
     forEach(tiles, function(el) {
         var s = el.style, cs = window.getComputedStyle(el), amt = r();
         s.backgroundColor = cs.backgroundColor
-        .darken(amt*20)
-        .desaturate(amt*30)
-        .toHexString();
     });
 }
 
 function fetchData(word) {
+    let button = document.querySelector('#search')
+    button.disabled = true;
+    setTimeout(function() {
+        button.disabled = false;
+    }, 2000);
     document.querySelector(".result-container").innerHTML = "";
     word = word.toLowerCase().replace(/[^a-z]/g, '');
     fetch(`https://scrabble-server.herokuapp.com/scrabble/${word}`)
