@@ -46,18 +46,23 @@ function styleTiles() {
 
 function fetchData(word) {
     let button = document.querySelector('#search')
+    
+
+    if (!button.disabled) {
+        document.querySelector(".result-container").innerHTML = "";
+        word = word.toLowerCase().replace(/[^a-z]/g, '');
+        fetch(`https://scrabble-server.herokuapp.com/scrabble/${word}`)
+        .then(res => res.json())
+        .then(data => {
+            WordList(data);
+        })
+        .catch(error => console.error('Error:', error));
+    }
+
     button.disabled = true;
     setTimeout(function() {
         button.disabled = false;
     }, 2000);
-    document.querySelector(".result-container").innerHTML = "";
-    word = word.toLowerCase().replace(/[^a-z]/g, '');
-    fetch(`https://scrabble-server.herokuapp.com/scrabble/${word}`)
-    .then(res => res.json())
-    .then(data => {
-        WordList(data);
-    })
-    .catch(error => console.error('Error:', error));
 }
 
 function wordForm() {
